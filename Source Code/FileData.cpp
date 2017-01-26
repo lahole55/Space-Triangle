@@ -6,117 +6,103 @@ FILE *fp;
 
 
 /*******************************
-void HandleDataInit()
-ŠT—vFƒtƒHƒ“ƒg‚ÌƒTƒCƒYE‘¾‚³‚Ì‰Šúİ’è
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
-void HandleDataInit() {//ƒTƒCƒYA‘¾‚³
-	fHandle[0] = CreateFontToHandle(NULL, 60, 4); //60,4
-	fHandle[1] = CreateFontToHandle(NULL, 40, 3); //40,3
-	fHandle[2] = CreateFontToHandle(NULL, 30, 3); //30,3
-
+ void HandleDataInit()
+ æ¦‚è¦ï¼šãƒ•ã‚©ãƒ³ãƒˆã®ã‚µã‚¤ã‚ºãƒ»å¤ªã•ã®åˆæœŸè¨­å®š
+ *******************************/
+void HandleDataInit() {//ã‚µã‚¤ã‚ºã€å¤ªã•
+    fHandle[0] = CreateFontToHandle(NULL, 60, 4); //60,4
+    fHandle[1] = CreateFontToHandle(NULL, 40, 3); //40,3
+    fHandle[2] = CreateFontToHandle(NULL, 30, 3); //30,3
+    
 }
 
 /*******************************
-void FileLoad()
-ŠT—vFƒ‰ƒ“ƒLƒ“ƒOƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İAtop[]‚É‘ã“ü
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void FileLoad()
+ æ¦‚è¦ï¼šãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã€top[]ã«ä»£å…¥
+ *******************************/
 void FileLoad() {
-	fp = fopen("Top5_1.txt", "r");
-
-	if (fp == NULL)
-		return;
-	else {
-		for (int i = 0; i < TOP; i++) {
-			fscanf(fp, "%s %d", top[i].name, &top[i].pt);
-		}
-		fscanf(fp, "%d", &game_num);
-		fclose(fp);
-	}
+    fp = fopen("Top5_1.txt", "r");
+    
+    if (fp == NULL)
+        return;
+    else {
+        for (int i = 0; i < TOP; i++) {
+            fscanf(fp, "%s %d", top[i].name, &top[i].pt);
+        }
+        fscanf(fp, "%d", &game_num);
+        fclose(fp);
+    }
 }
 
 /*******************************
-int FileRanking()
-ŠT—vFTOP5‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚Ì‚©‚Ì”»’è
-ˆø”F‚È‚µ
-•Ô’lF>0.‡ˆÊ@0.ƒ‰ƒ“ƒLƒ“ƒOŠO
-*******************************/
+ int FileRanking()
+ æ¦‚è¦ï¼šTOP5ã«å«ã¾ã‚Œã¦ã„ã‚‹ã®ã‹ã®åˆ¤å®š
+ è¿”å€¤ï¼š>0.é †ä½ã€€0.ãƒ©ãƒ³ã‚­ãƒ³ã‚°å¤–
+ *******************************/
 int FileRanking() {
-	for (int i = 0; i < TOP; i++) {
-		if (top[i].pt <= player.pt) {
-			return i + 1;//‡ˆÊ‚ğ•Ô‚·
-		}
-	}
-	return 0;
+    for (int i = 0; i < TOP; i++) {
+        if (top[i].pt <= player.pt) {
+            return i + 1;//é †ä½ã‚’è¿”ã™
+        }
+    }
+    return 0;
 }
 
 /*******************************
-void FileRenewal()
-ŠT—vFƒ‰ƒ“ƒLƒ“ƒO‚ÌXViƒvƒƒOƒ‰ƒ€“àj
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void FileRenewal()
+ æ¦‚è¦ï¼šãƒ©ãƒ³ã‚­ãƒ³ã‚°ã®æ›´æ–°ï¼ˆãƒ—ãƒ­ã‚°ãƒ©ãƒ å†…ï¼‰
+ *******************************/
 void FileRenewal() {
-	for (int j = TOP - 1; j > player.rank - 1; j--) {
-		top[j].pt = top[j - 1].pt;
-		strcpy(top[j].name, top[j - 1].name);
-	}
-	top[player.rank - 1].pt = player.pt;
-	strcpy(top[player.rank - 1].name, player.name);
+    for (int j = TOP - 1; j > player.rank - 1; j--) {
+        top[j].pt = top[j - 1].pt;
+        strcpy(top[j].name, top[j - 1].name);
+    }
+    top[player.rank - 1].pt = player.pt;
+    strcpy(top[player.rank - 1].name, player.name);
 }
 
 
 /*******************************
-void FileUpdate()
-ŠT—vFƒQ[ƒ€‚ğI—¹‚µ‚½‚Æ‚«‚ÉAƒ‰ƒ“ƒLƒ“ƒOƒtƒ@ƒCƒ‹‚ÌXV
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void FileUpdate()
+ æ¦‚è¦ï¼šã‚²ãƒ¼ãƒ ã‚’çµ‚äº†ã—ãŸã¨ãã«ã€ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›´æ–°
+ *******************************/
 void FileUpdate() {
-	fp = fopen("Top5_1.txt", "w");
-
-	if (fp == NULL)
-		return;
-	else {
-		for (int i = 0; i < TOP; i++) {
-			fprintf(fp, "%10s   %7d\n", top[i].name, top[i].pt);
-		}
-		fprintf(fp, "%d\n", game_num);
-		fclose(fp);
-	}
+    fp = fopen("Top5_1.txt", "w");
+    
+    if (fp == NULL)
+        return;
+    else {
+        for (int i = 0; i < TOP; i++) {
+            fprintf(fp, "%10s   %7d\n", top[i].name, top[i].pt);
+        }
+        fprintf(fp, "%d\n", game_num);
+        fclose(fp);
+    }
 }
 
 
 /*******************************
-void AllLoad()
-ŠT—vF‘S‚Ä‚Ìƒ[ƒhŠÖ”‚ğŠi”[
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void AllLoad()
+ æ¦‚è¦ï¼šå…¨ã¦ã®ãƒ­ãƒ¼ãƒ‰é–¢æ•°ã‚’æ ¼ç´ *******************************/
 void AllLoad() {
-	FileLoad();
-	PlayerLoad();
-	EnemyLoad();
-	EnemyDataLoad();
-
+    FileLoad();
+    PlayerLoad();
+    EnemyLoad();
+    EnemyDataLoad();
+    
 }
 
 /*******************************
-void AllInit()
-ŠT—vF‘S‚Ä‚Ì‰Šú‰»ŠÖ”‚ğŠi”[
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void AllInit()
+ æ¦‚è¦ï¼šå…¨ã¦ã®åˆæœŸåŒ–é–¢æ•°ã‚’æ ¼ç´
+ *******************************/
 void AllInit() {
-	stageCount = 20 * 60;
-	HandleDataInit();
-	PlayerInit();
-	KeisanInit();
-	EnemyInit();
-	for (int t = 0; t < ENEMY_ORDER_MAX; t++)
-		enemyOrder[t].flag = 1;
-
+    stageCount = 20 * 60;
+    HandleDataInit();
+    PlayerInit();
+    KeisanInit();
+    EnemyInit();
+    for (int t = 0; t < ENEMY_ORDER_MAX; t++)
+        enemyOrder[t].flag = 1;
+    
 }

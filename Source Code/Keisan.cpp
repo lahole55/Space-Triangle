@@ -4,264 +4,260 @@ static int sCount;
 
 
 /*******************************
-void KeisanInit()
-ŠT—vF’e‚ªo‚·‹O“¹‚Ì1ŸŠÖ”AŒğ“_‚Ì‰Šú‰»A
-@@@ƒJƒEƒ“ƒg‚ÌŒø‰Ê‰¹‚ÌŒÄ‚Ño‚µ
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void KeisanInit()
+ æ¦‚è¦ï¼šå¼¾ãŒå‡ºã™è»Œé“ã®1æ¬¡é–¢æ•°ã€äº¤ç‚¹ã®åˆæœŸåŒ–ã€
+ ã€€ã€€ã€€ã‚«ã‚¦ãƒ³ãƒˆã®åŠ¹æœéŸ³ã®å‘¼ã³å‡ºã—
+ *******************************/
 void KeisanInit() {
-	for (int i = 0; i < SHOT_MAX; i++) {
-		hen[i] = { 0 };
-	}
-
-	for (int i = 0; i < TEN_MAX; i++) {
-		kouten[i] = { 0 };
-	}
-
-	sCount = LoadSoundMem("bgm\\Count10.wav");
+    for (int i = 0; i < SHOT_MAX; i++) {
+        hen[i] = { 0 };
+    }
+    
+    for (int i = 0; i < TEN_MAX; i++) {
+        kouten[i] = { 0 };
+    }
+    
+    sCount = LoadSoundMem("bgm\\Count10.wav");
 }
 
 
 /*******************************
-OneZi HenBullet(Shot a, int num)
-ŠT—vF‘Å‚Á‚½’e‚Ì1ŸŠÖ”i‹O“¹j‚ğ‹‚ß‚é
-ˆø”‚PF’e‚ğŒ‚‚Á‚½‚Æ‚«‚Ì•Ï”
-ˆø”‚QF’e‚Ì”Ô†ií—Şj
-•Ô’lF‘Å‚Á‚½’e‚Ì1ŸŠÖ”i‹O“¹j
-*******************************/
-OneZi HenBullet(Shot a, int num) { // 1“_‚Ì‚İ‚ÅŒvZ
-	OneZi tmp;
-
-	tmp.slp = tan(a.bullet[num].ang - PI / 2);
-	tmp.irc = a.bullet[num].y - tmp.slp * a.bullet[num].x;
-
-	return tmp;
+ OneZi HenBullet(Shot a, int num)
+ æ¦‚è¦ï¼šæ‰“ã£ãŸå¼¾ã®1æ¬¡é–¢æ•°ï¼ˆè»Œé“ï¼‰ã‚’æ±‚ã‚ã‚‹
+ å¼•æ•°ï¼‘ï¼šå¼¾ã‚’æ’ƒã£ãŸã¨ãã®å¤‰æ•°
+ å¼•æ•°ï¼’ï¼šå¼¾ã®ç•ªå·ï¼ˆç¨®é¡ï¼‰
+ è¿”å€¤ï¼šæ‰“ã£ãŸå¼¾ã®1æ¬¡é–¢æ•°ï¼ˆè»Œé“ï¼‰
+ *******************************/
+OneZi HenBullet(Shot a, int num) { // 1ç‚¹ã®ã¿ã§è¨ˆç®—
+    OneZi tmp;
+    
+    tmp.slp = tan(a.bullet[num].ang - PI / 2);
+    tmp.irc = a.bullet[num].y - tmp.slp * a.bullet[num].x;
+    
+    return tmp;
 }
 
 
 /*******************************
-Ten Kouten_Init(OneZi a, OneZi b)
-ŠT—vF‚Q‚Â‚Ì‹O“¹‚ªŒğ‚í‚é—\’è‚ÌŒğ“_‚ğ‹‚ß‚é
-ˆø”‚PF‹O“¹‚P
-ˆø”‚QF‹O“¹‚Q
-•Ô’lFŒğ“_À•W
-*******************************/
-Ten Kouten_Init(OneZi a, OneZi b) {//•Ó“¯m‚ÌŒğ“_
-	Ten tmp;
-
-	if (a.slp != b.slp) { // ŒX‚«‚ª“¯‚¶‚Å‚È‚¢‚Æ‚«
-		tmp.x = (b.irc - a.irc) / (a.slp - b.slp);
-		tmp.y = a.slp * tmp.x + a.irc;
-		tmp.flag = 1;
-	}
-	else // ŒX‚«‚ª“¯‚¶‚Ì‚Æ‚«
-		tmp.flag = 0;
-
-	return tmp;
+ Ten Kouten_Init(OneZi a, OneZi b)
+ æ¦‚è¦ï¼šï¼’ã¤ã®è»Œé“ãŒäº¤ã‚ã‚‹äºˆå®šã®äº¤ç‚¹ã‚’æ±‚ã‚ã‚‹
+ å¼•æ•°ï¼‘ï¼šè»Œé“ï¼‘
+ å¼•æ•°ï¼’ï¼šè»Œé“ï¼’
+ è¿”å€¤ï¼šäº¤ç‚¹åº§æ¨™
+ *******************************/
+Ten Kouten_Init(OneZi a, OneZi b) {//è¾ºåŒå£«ã®äº¤ç‚¹
+    Ten tmp;
+    
+    if (a.slp != b.slp) { // å‚¾ããŒåŒã˜ã§ãªã„ã¨ã
+        tmp.x = (b.irc - a.irc) / (a.slp - b.slp);
+        tmp.y = a.slp * tmp.x + a.irc;
+        tmp.flag = 1;
+    }
+    else // å‚¾ããŒåŒã˜ã®ã¨ã
+        tmp.flag = 0;
+    
+    return tmp;
 }
 
 
 /*******************************
-int BulBulHitJudge(Bullet a, Bullet b, Ten c)
-ŠT—vF2‚Â‚Ì‹O“¹‚ªŒğ“_‚É’Ê‚Á‚½‚©‚Ì”»’è
-ˆø”‚PF‹O“¹‚Pã‚Ì’e
-ˆø”‚QF‹O“¹‚Qã‚Ì’e
-ˆø”‚RF‹O“¹‚PE‚Q‚ªŒğ‚í‚é—\’è‚ÌŒğ“_
-•Ô’lF1.Œğ‚í‚Á‚Ä‚¢‚é@0.Œğ‚í‚Á‚Ä‚¢‚È‚¢
-*******************************/
+ int BulBulHitJudge(Bullet a, Bullet b, Ten c)
+ æ¦‚è¦ï¼š2ã¤ã®è»Œé“ãŒäº¤ç‚¹ã«é€šã£ãŸã‹ã®åˆ¤å®š
+ å¼•æ•°ï¼‘ï¼šè»Œé“ï¼‘ä¸Šã®å¼¾
+ å¼•æ•°ï¼’ï¼šè»Œé“ï¼’ä¸Šã®å¼¾
+ å¼•æ•°ï¼“ï¼šè»Œé“ï¼‘ãƒ»ï¼’ãŒäº¤ã‚ã‚‹äºˆå®šã®äº¤ç‚¹
+ è¿”å€¤ï¼š1.äº¤ã‚ã£ã¦ã„ã‚‹ã€€0.äº¤ã‚ã£ã¦ã„ãªã„
+ *******************************/
 int BulBulHitJudge(Bullet a, Bullet b, Ten c) {
-	int x1 = c.x - a.x;
-	int x2 = c.x - b.x;
-	int y1 = c.y - a.y;
-	int y2 = c.y - b.y;
-	int r = 10;
-
-	if (x1*x1 + y1*y1 <= r*r) {
-		if (x2*x2 + y2*y2 <= r*r) {
-			return 1;
-		}
-	}
-	return 0;
+    int x1 = c.x - a.x;
+    int x2 = c.x - b.x;
+    int y1 = c.y - a.y;
+    int y2 = c.y - b.y;
+    int r = 10;
+    
+    if (x1*x1 + y1*y1 <= r*r) {
+        if (x2*x2 + y2*y2 <= r*r) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 /*******************************
-int EnemyInTriangle(Ten A, Ten B, Ten C, EnemyData E)
-ŠT—vFOŠpŒ`“à‚É“G‚ª‚¢‚é‚©‚Ì”»’è
-ˆø”‚PFŒğ“_‚P
-ˆø”‚QFŒğ“_‚Q
-ˆø”‚RFŒğ“_‚R
-ˆø”‚SF“G
-•Ô’lF1.OŠpŒ`“à‚É‚¢‚é@0.OŠpŒ`“à‚É‚¢‚È‚¢
-*******************************/
+ int EnemyInTriangle(Ten A, Ten B, Ten C, EnemyData E)
+ æ¦‚è¦ï¼šä¸‰è§’å½¢å†…ã«æ•µãŒã„ã‚‹ã‹ã®åˆ¤å®š
+ å¼•æ•°ï¼‘ï¼šäº¤ç‚¹ï¼‘
+ å¼•æ•°ï¼’ï¼šäº¤ç‚¹ï¼’
+ å¼•æ•°ï¼“ï¼šäº¤ç‚¹ï¼“
+ å¼•æ•°ï¼”ï¼šæ•µ
+ è¿”å€¤ï¼š1.ä¸‰è§’å½¢å†…ã«ã„ã‚‹ã€€0.ä¸‰è§’å½¢å†…ã«ã„ãªã„
+ *******************************/
 int EnemyInTriangle(Ten A, Ten B, Ten C, EnemyData E) {
-	Ten P;
-	P.x = E.x;
-	P.y = E.y;
-
-	//üã‚ÍŠO‘¤
-
-	Vector2D AB = sub_vector(B, A);
-	Vector2D BP = sub_vector(P, B);
-
-	Vector2D BC = sub_vector(C, B);
-	Vector2D CP = sub_vector(P, C);
-
-	Vector2D CA = sub_vector(A, C);
-	Vector2D AP = sub_vector(P, A);
-
-	//ŠOÏ(z¬•ª‚¾‚¯ŒvZ)
-	double c1 = AB.x*BP.y - AB.y*BP.x;
-	double c2 = BC.x*CP.y - BC.y*CP.x;
-	double c3 = CA.x*AP.y - CA.y*AP.x;
-
-	//OŠpŒ`‚Ì“à‘¤‚É‚ ‚é‚Æ‚«
-	if ((c1 > 0 && c2 > 0 && c3 > 0) || (c1 < 0 && c2 < 0 && c3 < 0)) {
-		return 1;
-	}
-	return 0;
+    Ten P;
+    P.x = E.x;
+    P.y = E.y;
+    
+    //ç·šä¸Šã¯å¤–å´
+    
+    Vector2D AB = sub_vector(B, A);
+    Vector2D BP = sub_vector(P, B);
+    
+    Vector2D BC = sub_vector(C, B);
+    Vector2D CP = sub_vector(P, C);
+    
+    Vector2D CA = sub_vector(A, C);
+    Vector2D AP = sub_vector(P, A);
+    
+    //å¤–ç©(zæˆåˆ†ã ã‘è¨ˆç®—)
+    double c1 = AB.x*BP.y - AB.y*BP.x;
+    double c2 = BC.x*CP.y - BC.y*CP.x;
+    double c3 = CA.x*AP.y - CA.y*AP.x;
+    
+    //ä¸‰è§’å½¢ã®å†…å´ã«ã‚ã‚‹ã¨ã
+    if ((c1 > 0 && c2 > 0 && c3 > 0) || (c1 < 0 && c2 < 0 && c3 < 0)) {
+        return 1;
+    }
+    return 0;
 }
 
 
 /*******************************
-Vector2D sub_vector(const Ten a, const Ten b)
-ŠT—vF‚Q“_ŠÔ‚ÌƒxƒNƒgƒ‹‚ğŒvZ
-ˆø”‚PFŒğ“_‚P
-ˆø”‚QFŒğ“_‚Q
-•Ô’lFƒxƒNƒgƒ‹
-*******************************/
+ Vector2D sub_vector(const Ten a, const Ten b)
+ æ¦‚è¦ï¼šï¼’ç‚¹é–“ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+ å¼•æ•°ï¼‘ï¼šäº¤ç‚¹ï¼‘
+ å¼•æ•°ï¼’ï¼šäº¤ç‚¹ï¼’
+ è¿”å€¤ï¼šãƒ™ã‚¯ãƒˆãƒ«
+ *******************************/
 Vector2D sub_vector(const Ten a, const Ten b) {
-	Vector2D ret;
-
-	ret.x = a.x - b.x;
-	ret.y = a.y - b.y;
-
-	return ret;
+    Vector2D ret;
+    
+    ret.x = a.x - b.x;
+    ret.y = a.y - b.y;
+    
+    return ret;
 }
 
 
 /*******************************
-double Hansya(EnemyData a, double k)
-ŠT—vF“G‚ª’e‚É“–‚½‚Á‚½‚Æ‚«‚ÌA“G‚Ì”½ËŠp“x‚ğŒvZ
-ˆø”‚PF“G
-ˆø”‚QF’e‚ÌŠp“x
-•Ô’lF”½Ë‚µ‚½“G‚ÌŠp“x
-*******************************/
+ double Hansya(EnemyData a, double k)
+ æ¦‚è¦ï¼šæ•µãŒå¼¾ã«å½“ãŸã£ãŸã¨ãã®ã€æ•µã®åå°„è§’åº¦ã‚’è¨ˆç®—
+ å¼•æ•°ï¼‘ï¼šæ•µ
+ å¼•æ•°ï¼’ï¼šå¼¾ã®è§’åº¦
+ è¿”å€¤ï¼šåå°„ã—ãŸæ•µã®è§’åº¦
+ *******************************/
 double Hansya(EnemyData a, double k) {
-	double x = PI - a.ang + 2 * k;
-	return x;
+    double x = PI - a.ang + 2 * k;
+    return x;
 }
 
 
 /*******************************
-int EneBulHitJudge2(EnemyData a, Bullet b)
-ŠT—vF“G‚Æ’e‚ª“–‚½‚Á‚½‚©‚Ì”»’è
-ˆø”‚PF“G
-ˆø”‚QF’e
-•Ô’lF1.“–‚½‚Á‚½@0.“–‚½‚Á‚Ä‚¢‚È‚¢
-*******************************/
+ int EneBulHitJudge2(EnemyData a, Bullet b)
+ æ¦‚è¦ï¼šæ•µã¨å¼¾ãŒå½“ãŸã£ãŸã‹ã®åˆ¤å®š
+ å¼•æ•°ï¼‘ï¼šæ•µ
+ å¼•æ•°ï¼’ï¼šå¼¾
+ è¿”å€¤ï¼š1.å½“ãŸã£ãŸã€€0.å½“ãŸã£ã¦ã„ãªã„
+ *******************************/
 int EneBulHitJudge2(EnemyData a, Bullet b) {
-	int x1 = a.x - b.x;
-	int y1 = a.y - b.y;
-	int r = 10;
-
-	if (x1*x1 + y1*y1 <= r*r) {
-		return 1;
-	}
-	return 0;
+    int x1 = a.x - b.x;
+    int y1 = a.y - b.y;
+    int r = 10;
+    
+    if (x1*x1 + y1*y1 <= r*r) {
+        return 1;
+    }
+    return 0;
 }
 
 
 /*******************************
-double TriMenseki(Ten A, Ten B, Ten C)
-ŠT—vF‚Å‚«‚½OŠpŒ`‚Ì–ÊÏ‚ğŒvZ
-ˆø”‚PFŒğ“_‚P
-ˆø”‚QFŒğ“_‚Q
-ˆø”‚RFŒğ“_‚R
-•Ô’lFOŠpŒ`‚Ì–ÊÏ
-*******************************/
+ double TriMenseki(Ten A, Ten B, Ten C)
+ æ¦‚è¦ï¼šã§ããŸä¸‰è§’å½¢ã®é¢ç©ã‚’è¨ˆç®—
+ å¼•æ•°ï¼‘ï¼šäº¤ç‚¹ï¼‘
+ å¼•æ•°ï¼’ï¼šäº¤ç‚¹ï¼’
+ å¼•æ•°ï¼“ï¼šäº¤ç‚¹ï¼“
+ è¿”å€¤ï¼šä¸‰è§’å½¢ã®é¢ç©
+ *******************************/
 double TriMenseki(Ten A, Ten B, Ten C) {
-	double s = 0;
-
-	Vector2D AB = sub_vector(B, A);
-	Vector2D AC = sub_vector(C, A);
-
-	s = fabs(AB.x*AC.y - AB.y*AC.x) / 2;
-
-	return s;
+    double s = 0;
+    
+    Vector2D AB = sub_vector(B, A);
+    Vector2D AC = sub_vector(C, A);
+    
+    s = fabs(AB.x*AC.y - AB.y*AC.x) / 2;
+    
+    return s;
 }
 
 
 /*******************************
-int PointGet(EnemyData a, double s)
-ŠT—vF“G‚ğ“|‚µ‚½‚Æ‚«‚Ì“¾“_‚ÌŒvZ
-ˆø”‚PF“G
-ˆø”‚QFOŠpŒ`‚Ì–ÊÏ
-•Ô’lF“¾“_
-*******************************/
+ int PointGet(EnemyData a, double s)
+ æ¦‚è¦ï¼šæ•µã‚’å€’ã—ãŸã¨ãã®å¾—ç‚¹ã®è¨ˆç®—
+ å¼•æ•°ï¼‘ï¼šæ•µ
+ å¼•æ•°ï¼’ï¼šä¸‰è§’å½¢ã®é¢ç©
+ è¿”å€¤ï¼šå¾—ç‚¹
+ *******************************/
 int PointGet(EnemyData a, double s) {
-	int point = 0;
-
-	point = log(100000.0) / log(s) * a.pt;
-
-	return point;
+    int point = 0;
+    
+    point = log(100000.0) / log(s) * a.pt;
+    
+    return point;
 }
 
 
 /*******************************
-void System()
-ŠT—vFƒƒCƒ“‰æ–Ê‚Ì”š‚ğ•`‰æ
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void System()
+ æ¦‚è¦ï¼šãƒ¡ã‚¤ãƒ³ç”»é¢ã®æ•°å­—ã‚’æç”»
+ *******************************/
 void System() {
-	//Ÿ’e‚Ì•\¦
-	DrawStringToHandle(WINDOW_WIDTH2 + 100, 60, "Next", black, fHandle[2]);
-	DrawBox(WINDOW_WIDTH2 + 80, 100, WINDOW_WIDTH2 + 180, 200, white, TRUE);
-	DrawRotaGraph(WINDOW_WIDTH2 + 130, 150, 2, 0, pla_bul.bullet[pla_bul.num].ghandle, TRUE, FALSE);
-
-	//ƒ^ƒCƒ€‚Ì•\¦
-	if (stageCount > 0) {
-		if (stageCount <= STAGE_COUNT)
-			DrawFormatStringToHandle(WINDOW_WIDTH2 + 250 / 8, 300, black, fHandle[2], "Time: %3d", stageCount / 60);
-		else {
-			if (stageCount % 60 == 0)
-				PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
-			DrawFormatStringToHandle(WINDOW_WIDTH2 + 250 / 8, 300, black, fHandle[2], "Time: %3d", STAGE_COUNT / 60);
-			DrawFormatStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, red, fHandle[0], "%d", (stageCount - STAGE_COUNT) / 60);
-		}
-
-		// c‚èŠÔ
-		if (115 * 60 < stageCount && stageCount <= 120 * 60) {
-			if(stageCount % 60 == 0)
-				PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
-			if((stageCount / 30) % 2 == 1)
-				DrawStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, "120•b", red, fHandle[0]);
-		}
-		if (55 * 60 < stageCount && stageCount <= 60 * 60) {
-			if(stageCount % 60 == 0)
-				PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
-			if((stageCount / 30) % 2 == 1)
-				DrawStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, "60•b", red, fHandle[0]);
-		}
-		if (25 * 60 < stageCount && stageCount <= 30 * 60) {
-			if(stageCount % 60 == 0)
-				PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
-			if((stageCount / 30) % 2 == 1)
-				DrawStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, "30•b", red, fHandle[0]);
-		}
-
-		if (stageCount / 60 <= 10) {
-			if(stageCount % 60 == 0)
-				PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
-			DrawFormatStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, red, fHandle[0], "%d", stageCount / 60);
-		}
-	}
-	else if (stageCount <= 0) {
-		DrawStringToHandle(WINDOW_WIDTH2 + 250 / 8, 300, "Time:   0", black, fHandle[2]);
-	}
-
-	//ƒ|ƒCƒ“ƒg‚Ì•\¦
-	DrawStringToHandle(WINDOW_WIDTH2 + 250 / 8, 350, "Point:", black, fHandle[2]);
-	DrawFormatStringToHandle(WINDOW_WIDTH2 + 250 * 7 / 8 - 15 * 6, 350, black, fHandle[2], "%7d", player.pt);
+    //æ¬¡å¼¾ã®è¡¨ç¤º
+    DrawStringToHandle(WINDOW_WIDTH2 + 100, 60, "Next", black, fHandle[2]);
+    DrawBox(WINDOW_WIDTH2 + 80, 100, WINDOW_WIDTH2 + 180, 200, white, TRUE);
+    DrawRotaGraph(WINDOW_WIDTH2 + 130, 150, 2, 0, pla_bul.bullet[pla_bul.num].ghandle, TRUE, FALSE);
+    
+    //ã‚¿ã‚¤ãƒ ã®è¡¨ç¤º
+    if (stageCount > 0) {
+        if (stageCount <= STAGE_COUNT)
+            DrawFormatStringToHandle(WINDOW_WIDTH2 + 250 / 8, 300, black, fHandle[2], "Time: %3d", stageCount / 60);
+        else {
+            if (stageCount % 60 == 0)
+                PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
+            DrawFormatStringToHandle(WINDOW_WIDTH2 + 250 / 8, 300, black, fHandle[2], "Time: %3d", STAGE_COUNT / 60);
+            DrawFormatStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, red, fHandle[0], "%d", (stageCount - STAGE_COUNT) / 60);
+        }
+        
+        // æ®‹ã‚Šæ™‚é–“
+        if (115 * 60 < stageCount && stageCount <= 120 * 60) {
+            if(stageCount % 60 == 0)
+                PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
+            if((stageCount / 30) % 2 == 1)
+                DrawStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, "120ç§’", red, fHandle[0]);
+        }
+        if (55 * 60 < stageCount && stageCount <= 60 * 60) {
+            if(stageCount % 60 == 0)
+                PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
+            if((stageCount / 30) % 2 == 1)
+                DrawStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, "60ç§’", red, fHandle[0]);
+        }
+        if (25 * 60 < stageCount && stageCount <= 30 * 60) {
+            if(stageCount % 60 == 0)
+                PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
+            if((stageCount / 30) % 2 == 1)
+                DrawStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, "30ç§’", red, fHandle[0]);
+        }
+        
+        if (stageCount / 60 <= 10) {
+            if(stageCount % 60 == 0)
+                PlaySoundMem(sCount, DX_PLAYTYPE_BACK);
+            DrawFormatStringToHandle(WINDOW_WIDTH2 / 2 - 30, WINDOW_HEIGHT / 2 - 50, red, fHandle[0], "%d", stageCount / 60);
+        }
+    }
+    else if (stageCount <= 0) {
+        DrawStringToHandle(WINDOW_WIDTH2 + 250 / 8, 300, "Time:   0", black, fHandle[2]);
+    }
+    
+    //ãƒã‚¤ãƒ³ãƒˆã®è¡¨ç¤º
+    DrawStringToHandle(WINDOW_WIDTH2 + 250 / 8, 350, "Point:", black, fHandle[2]);
+    DrawFormatStringToHandle(WINDOW_WIDTH2 + 250 * 7 / 8 - 15 * 6, 350, black, fHandle[2], "%7d", player.pt);
 }

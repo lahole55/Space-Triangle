@@ -1,3 +1,8 @@
+/*******************************
+EnemyData.cpp
+æ¦‚è¦ï¼šæ•µãƒ‡ãƒ¼ã‚¿ã®æç”»ã€å‹•ãã€ã‚­ãƒ«åˆ¤å®š
+*******************************/
+
 #include "common.h"
 
 static int gEnemy1, gEnemy2, gEnemy3;
@@ -6,265 +11,251 @@ static int sKill0, sKill1, sKill2, sKill3, sKill4;
 
 
 void(*EnemyPattern[ENEMY_PATTERN_MAX])(int) = {
-	EnemyPattern0
+    EnemyPattern0
 };
 
 /*******************************
-void EnemyLoad()
-ŠT—vF“G‚Ì‰æ‘œA“|‚µ‚½‚Æ‚«‚ÌŒø‰Ê‰¹‚ğƒ[ƒh
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyLoad()
+ æ¦‚è¦ï¼šæ•µã®ç”»åƒã€å€’ã—ãŸã¨ãã®åŠ¹æœéŸ³ã‚’ãƒ­ãƒ¼ãƒ‰
+ *******************************/
 void EnemyLoad() {
-	gEnemy1 = LoadGraph("sozai\\enemy1.png");
-	gEnemy2 = LoadGraph("sozai\\enemy2.png");
-	gEnemy3 = LoadGraph("sozai\\enemy3.png");
-
-	sKill0 = LoadSoundMem("bgm\\kill\\Kill0.wav");
-	sKill1 = LoadSoundMem("bgm\\kill\\Kill1.wav");
-	sKill2 = LoadSoundMem("bgm\\kill\\Kill2.wav");
-	sKill3 = LoadSoundMem("bgm\\kill\\Kill3.wav");
-	sKill4 = LoadSoundMem("bgm\\kill\\Kill4.wav");
+    gEnemy1 = LoadGraph("sozai\\enemy1.png");
+    gEnemy2 = LoadGraph("sozai\\enemy2.png");
+    gEnemy3 = LoadGraph("sozai\\enemy3.png");
+    
+    sKill0 = LoadSoundMem("bgm\\kill\\Kill0.wav");
+    sKill1 = LoadSoundMem("bgm\\kill\\Kill1.wav");
+    sKill2 = LoadSoundMem("bgm\\kill\\Kill2.wav");
+    sKill3 = LoadSoundMem("bgm\\kill\\Kill3.wav");
+    sKill4 = LoadSoundMem("bgm\\kill\\Kill4.wav");
 }
 
 /*******************************
-void EnemyInit()
-ŠT—vF“G‚Ìƒf[ƒ^‚ğ‰Šú‰»
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyInit()
+ æ¦‚è¦ï¼šæ•µã®ãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–
+ *******************************/
 void EnemyInit() {
-	for (int i = 0; i < ENEMY_MAX; i++) {
-		enemy[i] = { 0 };
-	}
+    for (int i = 0; i < ENEMY_MAX; i++) {
+        enemy[i] = { 0 };
+    }
 }
 
 /*******************************
-void EnemyDraw()
-ŠT—vF“G‚ğ•`‰æ
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyDraw()
+ æ¦‚è¦ï¼šæ•µã‚’æç”»
+ *******************************/
 void EnemyDraw() {
-	for (int i = 0; i < ENEMY_MAX; i++) {
-		if (enemy[i].flag > 0) {
-			switch (enemy[i].knd) {
-			case 1:
-				DrawRotaGraph(enemy[i].x, enemy[i].y, 1, 0, gEnemy1, TRUE, FALSE);
-				break;
-			case 2:
-				DrawRotaGraph(enemy[i].x, enemy[i].y, 1, 0, gEnemy2, TRUE, FALSE);
-				break;
-			case 3:
-				DrawRotaGraph(enemy[i].x, enemy[i].y, 1, 0, gEnemy3, TRUE, FALSE);
-				break;
-			}
-		}
-	}
+    for (int i = 0; i < ENEMY_MAX; i++) {
+        if (enemy[i].flag > 0) {
+            switch (enemy[i].knd) {
+                case 1:
+                    DrawRotaGraph(enemy[i].x, enemy[i].y, 1, 0, gEnemy1, TRUE, FALSE);
+                    break;
+                case 2:
+                    DrawRotaGraph(enemy[i].x, enemy[i].y, 1, 0, gEnemy2, TRUE, FALSE);
+                    break;
+                case 3:
+                    DrawRotaGraph(enemy[i].x, enemy[i].y, 1, 0, gEnemy3, TRUE, FALSE);
+                    break;
+            }
+        }
+    }
 }
 
 /*******************************
-void EnemyDataLoad()
-ŠT—vFEnemyData.csv‚©‚ç“G‚ÌŒ³ƒf[ƒ^‚ğ“Ç‚İ‚Ş
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyDataLoad()
+ æ¦‚è¦ï¼šEnemyData.csvã‹ã‚‰æ•µã®å…ƒãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+ *******************************/
 void EnemyDataLoad() {
-	int fp;//ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ŞŒ^
-	int input[64];
-	char inputc[64];
-
-	fp = FileRead_open("EnemyData.csv");//ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
-	if (fp == NULL) {
-		printfDx("read error\n");
-		return;
-	}
-	for (int i = 0; i < 2; i++)//Å‰‚Ì2s“Ç‚İ”ò‚Î‚·
-		while (FileRead_getc(fp) != '\n');
-
-	int n = 0;//s
-	int num = 0;//—ñ
-
-	while (1) {
-		for (int i = 0; i < 64; i++) {
-			inputc[i] = input[i] = FileRead_getc(fp);//1•¶šæ“¾‚·‚é
-													 //printfDx("%c",inputc[i]);
-			if (inputc[i] == '/') {//ƒXƒ‰ƒbƒVƒ…‚ª‚ ‚ê‚Î
-				while (FileRead_getc(fp) != '\n');//‰üs‚Ü‚Åƒ‹[ƒv
-				i = -1;//ƒJƒEƒ“ƒ^‚ğÅ‰‚É–ß‚µ‚Ä
-				continue;//for‚Ü‚Å–ß‚é
-			}
-			if (input[i] == ',' || input[i] == '\n') {//ƒJƒ“ƒ}‚©‰üs‚È‚ç
-				inputc[i] = '\0';//‚»‚±‚Ü‚Å‚ğ•¶š—ñ‚Æ‚µ
-
-				break;
-			}
-			if (input[i] == EOF) {//ƒtƒ@ƒCƒ‹‚ÌI‚í‚è‚È‚ç
-				goto EXFILE;//I—¹(EXFILE‚Ü‚Å”ò‚Ô)
-			}
-		}
-		//printfDx("%d,",atoi(inputc));
-		switch (num) {
-		case 0: enemyOrder[n].knd = atoi(inputc); break;//atoi:•¶š—ñ‚ğ”®‚É•Ï‚¦‚é
-		case 1: enemyOrder[n].pattern = atoi(inputc); break;
-		case 2: enemyOrder[n].wait = atoi(inputc); break;
-		case 3: enemyOrder[n].x = atof(inputc); break;
-		case 4: enemyOrder[n].y = atof(inputc); break;
-		case 5: enemyOrder[n].muki = atof(inputc); break;
-		case 6: enemyOrder[n].spd = atof(inputc); break;
-		case 7: enemyOrder[n].rtn = atoi(inputc); break;
-		case 8: enemyOrder[n].pt = atoi(inputc); break;
-		}
-		num++;
-		if (num == 9) {
-			num = 0;
-			enemyOrder[n].flag = 1;
-			n++;
-		}
-	}
+    int fp;//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€å‹
+    int input[64];
+    char inputc[64];
+    
+    fp = FileRead_open("EnemyData.csv");//ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
+    if (fp == NULL) {
+        printfDx("read error\n");
+        return;
+    }
+    for (int i = 0; i < 2; i++)//æœ€åˆã®2è¡Œèª­ã¿é£›ã°ã™
+        while (FileRead_getc(fp) != '\n');
+    
+    int n = 0;//è¡Œ
+    int num = 0;//åˆ—
+    
+    while (1) {
+        for (int i = 0; i < 64; i++) {
+            inputc[i] = input[i] = FileRead_getc(fp);//1æ–‡å­—å–å¾—ã™ã‚‹
+            //printfDx("%c",inputc[i]);
+            if (inputc[i] == '/') {//ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ãŒã‚ã‚Œã°
+                while (FileRead_getc(fp) != '\n');//æ”¹è¡Œã¾ã§ãƒ«ãƒ¼ãƒ—
+                i = -1;//ã‚«ã‚¦ãƒ³ã‚¿ã‚’æœ€åˆã«æˆ»ã—ã¦
+                continue;//forã¾ã§æˆ»ã‚‹
+            }
+            if (input[i] == ',' || input[i] == '\n') {//ã‚«ãƒ³ãƒã‹æ”¹è¡Œãªã‚‰
+                inputc[i] = '\0';//ãã“ã¾ã§ã‚’æ–‡å­—åˆ—ã¨ã—
+                
+                break;
+            }
+            if (input[i] == EOF) {//ãƒ•ã‚¡ã‚¤ãƒ«ã®çµ‚ã‚ã‚Šãªã‚‰
+                goto EXFILE;//çµ‚äº†(EXFILEã¾ã§é£›ã¶)
+            }
+        }
+        //printfDx("%d,",atoi(inputc));
+        switch (num) {
+            case 0: enemyOrder[n].knd = atoi(inputc); break;
+            case 1: enemyOrder[n].pattern = atoi(inputc); break;
+            case 2: enemyOrder[n].wait = atoi(inputc); break;
+            case 3: enemyOrder[n].x = atof(inputc); break;
+            case 4: enemyOrder[n].y = atof(inputc); break;
+            case 5: enemyOrder[n].muki = atof(inputc); break;
+            case 6: enemyOrder[n].spd = atof(inputc); break;
+            case 7: enemyOrder[n].rtn = atoi(inputc); break;
+            case 8: enemyOrder[n].pt = atoi(inputc); break;
+        }
+        num++;
+        if (num == 9) {
+            num = 0;
+            enemyOrder[n].flag = 1;
+            n++;
+        }
+    }
 EXFILE:
-	FileRead_close(fp);
+    FileRead_close(fp);
 }
 
 /*******************************
-void EnemyEnter()
-ŠT—vFŒ³ƒf[ƒ^‚©‚ç“G‚Ìƒf[ƒ^‚ğ“Ç‚İ‚Ş
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyEnter()
+ æ¦‚è¦ï¼šå…ƒãƒ‡ãƒ¼ã‚¿ã‹ã‚‰æ•µã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+ *******************************/
 void EnemyEnter() {
-	for (int t = 0; t < ENEMY_ORDER_MAX; t++) {
-		if (enemyOrder[t].flag == 1) {
-			for (int i = 0; i < ENEMY_MAX; i++) {
-				if (enemy[i].flag == 0) {
-					enemy[i].flag = 1;
-					enemy[i].flag2 = -2;
-					enemy[i].knd = enemyOrder[t].knd;
-					enemy[i].pattern = enemyOrder[t].pattern;
-					enemy[i].wait = enemyOrder[t].wait;
-					enemy[i].x = enemyOrder[t].x;
-					enemy[i].y = enemyOrder[t].y;
-					enemy[i].ang = 2 * PI / 8 * enemyOrder[t].muki;
-					enemy[i].spd = enemyOrder[t].spd;
-					enemy[i].rtn = enemyOrder[t].rtn;
-					enemy[i].pt = enemyOrder[t].pt;
-
-					enemyOrder[t].flag = 0;
-					break;
-				}
-			}
-		}
-	}
+    for (int t = 0; t < ENEMY_ORDER_MAX; t++) {
+        if (enemyOrder[t].flag == 1) {
+            for (int i = 0; i < ENEMY_MAX; i++) {
+                if (enemy[i].flag == 0) {
+                    enemy[i].flag = 1;
+                    enemy[i].flag2 = -2;
+                    enemy[i].knd = enemyOrder[t].knd;
+                    enemy[i].pattern = enemyOrder[t].pattern;
+                    enemy[i].wait = enemyOrder[t].wait;
+                    enemy[i].x = enemyOrder[t].x;
+                    enemy[i].y = enemyOrder[t].y;
+                    enemy[i].ang = 2 * PI / 8 * enemyOrder[t].muki;
+                    enemy[i].spd = enemyOrder[t].spd;
+                    enemy[i].rtn = enemyOrder[t].rtn;
+                    enemy[i].pt = enemyOrder[t].pt;
+                    
+                    enemyOrder[t].flag = 0;
+                    break;
+                }
+            }
+        }
+    }
 }
 
 /*******************************
-void EnemyMove()
-ŠT—vF“G‚ğ“®‚©‚·
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyMove()
+ æ¦‚è¦ï¼šæ•µã‚’å‹•ã‹ã™
+ *******************************/
 void EnemyMove() {
-	for (int i = 0; i < ENEMY_MAX; i++) {
-		if (enemy[i].flag > 0) {
-			if (enemy[i].wait == 0) {
-				EnemyPattern[enemy[i].pattern](i);
-				enemy[i].cnt++;
-
-				if (enemy[i].x < 0 || WINDOW_WIDTH2 < enemy[i].x) {//‰¡‚©‚ço‚æ‚¤‚Æ‚µ‚½‚Æ‚«
-					if (enemy[i].flag == 2 && enemy[i].rtn > 0) {//‰æ–Ê“à‚É‚ ‚é,”½Ë‚·‚é‰ñ”‚ª‚Ü‚¾‚ ‚é‚Æ‚«
-						double kaku = PI;
-						enemy[i].ang = Hansya(enemy[i], kaku);//Keisan.cpp‚Ö
-						enemy[i].rtn--;
-						enemy[i].flag2 = -1;
-					}
-					else if (enemy[i].rtn == 0)
-						enemy[i].flag = 0;
-				}
-				if (enemy[i].y < 0 || WINDOW_HEIGHT < enemy[i].y) {//c‚©‚ço‚æ‚¤‚Æ‚µ‚½‚Æ‚«
-					if (enemy[i].flag == 2 && enemy[i].rtn > 0) {//‰æ–Ê“à‚É‚ ‚é,”½Ë‚·‚é‰ñ”‚ª‚Ü‚¾‚ ‚é‚Æ‚«
-						double kaku = PI / 2;
-						enemy[i].ang = Hansya(enemy[i], kaku);//Keisan.cpp‚Ö
-						enemy[i].rtn--;
-						enemy[i].flag2 = -1;
-					}
-					else if (enemy[i].rtn == 0)
-						enemy[i].flag = 0;
-				}
-				if (enemy[i].flag == 1) {//‰æ–ÊŠO‚©‚ç‰æ–Ê“à‚É“ü‚Á‚Ä‚«‚½
-					if (enemy[i].x >= 0 && WINDOW_WIDTH2 >= enemy[i].x && enemy[i].y >= 0 && WINDOW_HEIGHT >= enemy[i].y)
-						enemy[i].flag = 2;
-				}
-
-				//pla_bul2[m].bullet[n]‚É“–‚½‚Á‚½‚Æ‚«
-				for (int m = 0; m < SHOT_MAX; m++) {
-					if (enemy[i].flag2 != m) {//‘O‚É”½Ë‚µ‚½•Ó‚Æˆá‚¤•Ó‚Ì‚Æ‚«
-						for (int n = 0; n < SHOT_BULLET_MAX; n++) {
-							if (pla_bul2[m].bullet[n].flag > 0) {
-								if (EneBulHitJudge2(enemy[i], pla_bul2[m].bullet[n]) > 0) {
-									double kaku = pla_bul2[m].bullet[n].ang;
-									enemy[i].ang = Hansya(enemy[i], kaku);//”½‘Î‘¤‚É”ò‚Î‚È‚¢‚æ‚¤‚É(o‚È‚¢‚æ‚¤‚É)’²®‚ª•K—v
-									enemy[i].flag2 = m;
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-
-			if (enemy[i].wait > 0)
-				enemy[i].wait--;
-
-		}
-	}
+    for (int i = 0; i < ENEMY_MAX; i++) {
+        if (enemy[i].flag > 0) {
+            if (enemy[i].wait == 0) {
+                EnemyPattern[enemy[i].pattern](i);
+                enemy[i].cnt++;
+                
+                if (enemy[i].x < 0 || WINDOW_WIDTH2 < enemy[i].x) {//æ¨ªã‹ã‚‰å‡ºã‚ˆã†ã¨ã—ãŸã¨ã
+                    if (enemy[i].flag == 2 && enemy[i].rtn > 0) {//ç”»é¢å†…ã«ã‚ã‚‹,åå°„ã™ã‚‹å›æ•°ãŒã¾ã ã‚ã‚‹ã¨ã
+                        double kaku = PI;
+                        enemy[i].ang = Hansya(enemy[i], kaku);//Keisan.cppã¸
+                        enemy[i].rtn--;
+                        enemy[i].flag2 = -1;
+                    }
+                    else if (enemy[i].rtn == 0)
+                        enemy[i].flag = 0;
+                }
+                if (enemy[i].y < 0 || WINDOW_HEIGHT < enemy[i].y) {//ç¸¦ã‹ã‚‰å‡ºã‚ˆã†ã¨ã—ãŸã¨ã
+                    if (enemy[i].flag == 2 && enemy[i].rtn > 0) {//ç”»é¢å†…ã«ã‚ã‚‹,åå°„ã™ã‚‹å›æ•°ãŒã¾ã ã‚ã‚‹ã¨ã
+                        double kaku = PI / 2;
+                        enemy[i].ang = Hansya(enemy[i], kaku);//Keisan.cppã¸
+                        enemy[i].rtn--;
+                        enemy[i].flag2 = -1;
+                    }
+                    else if (enemy[i].rtn == 0)
+                        enemy[i].flag = 0;
+                }
+                if (enemy[i].flag == 1) {//ç”»é¢å¤–ã‹ã‚‰ç”»é¢å†…ã«å…¥ã£ã¦ããŸæ™‚
+                    if (enemy[i].x >= 0 && WINDOW_WIDTH2 >= enemy[i].x && enemy[i].y >= 0 && WINDOW_HEIGHT >= enemy[i].y)
+                        enemy[i].flag = 2;
+                }
+                
+                //pla_bul2[m].bullet[n]ã«å½“ãŸã£ãŸã¨ã
+                for (int m = 0; m < SHOT_MAX; m++) {
+                    if (enemy[i].flag2 != m) {//å‰ã«åå°„ã—ãŸè¾ºã¨é•ã†è¾ºã®ã¨ã
+                        for (int n = 0; n < SHOT_BULLET_MAX; n++) {
+                            if (pla_bul2[m].bullet[n].flag > 0) {
+                                if (EneBulHitJudge2(enemy[i], pla_bul2[m].bullet[n]) > 0) {
+                                    double kaku = pla_bul2[m].bullet[n].ang;
+                                    enemy[i].ang = Hansya(enemy[i], kaku);//åå¯¾å´ã«é£›ã°ãªã„ã‚ˆã†ã«(å‡ºãªã„ã‚ˆã†ã«)èª¿æ•´ãŒå¿…è¦
+                                    enemy[i].flag2 = m;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (enemy[i].wait > 0)
+                enemy[i].wait--;
+            
+        }
+    }
 }
 
 /*******************************
-void EnemyKill()
-ŠT—vF“G‚ªOŠpŒ`‚É“ü‚Á‚½‚Æ‚«‚É“|‚·
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void EnemyKill()
+ æ¦‚è¦ï¼šæ•µãŒä¸‰è§’å½¢ã«å…¥ã£ãŸã¨ãã«å€’ã™
+ *******************************/
 static double sT = 0;
 static int E_num = -1;
 void EnemyKill() {
-	if (kouten[0].flag == 2 && kouten[1].flag == 2 && kouten[2].flag == 2) {
-		for (int i = 0; i < ENEMY_MAX; i++) {
-			if (enemy[i].flag > 0) {//“G‚ğ“|‚·”»’è
-				if (EnemyInTriangle(kouten[0], kouten[1], kouten[2], enemy[i]) > 0) {
-					if (E_num == -1)
-						E_num = 0;
-					enemy[i].flag = 0;
-
-					//OŠpŒ`‚Ì–ÊÏ‚ğ‹‚ß‚é
-					sT = TriMenseki(kouten[0], kouten[1], kouten[2]);
-
-					ptu += PointGet(enemy[i], sT);
-					E_num++;
-				}
-			}
-		}
-
-		switch (E_num) { // ”{—¦
-		case 0:
-			PlaySoundMem(sKill0, DX_PLAYTYPE_BACK);
-			break;
-		case 1:
-			PlaySoundMem(sKill1, DX_PLAYTYPE_BACK);
-			break;
-		case 2:
-			PlaySoundMem(sKill2, DX_PLAYTYPE_BACK);
-			ptu *= 1.2;
-			break;
-		case 3:
-			PlaySoundMem(sKill3, DX_PLAYTYPE_BACK);
-			ptu *= 1.5;
-			break;
-		case 4:
-			PlaySoundMem(sKill4, DX_PLAYTYPE_BACK);
-			ptu *= 2.0;
-			break;
-		}
-		E_num = -1;
-	}
+    if (kouten[0].flag == 2 && kouten[1].flag == 2 && kouten[2].flag == 2) {
+        for (int i = 0; i < ENEMY_MAX; i++) {
+            if (enemy[i].flag > 0) {//æ•µã‚’å€’ã™åˆ¤å®š
+                if (EnemyInTriangle(kouten[0], kouten[1], kouten[2], enemy[i]) > 0) {
+                    if (E_num == -1)
+                        E_num = 0;
+                    enemy[i].flag = 0;
+                    
+                    //ä¸‰è§’å½¢ã®é¢ç©ã‚’æ±‚ã‚ã‚‹
+                    sT = TriMenseki(kouten[0], kouten[1], kouten[2]);
+                    
+                    ptu += PointGet(enemy[i], sT);
+                    E_num++;
+                }
+            }
+        }
+        
+        switch (E_num) { // å€ç‡
+            case 0:
+                PlaySoundMem(sKill0, DX_PLAYTYPE_BACK);
+                break;
+            case 1:
+                PlaySoundMem(sKill1, DX_PLAYTYPE_BACK);
+                break;
+            case 2:
+                PlaySoundMem(sKill2, DX_PLAYTYPE_BACK);
+                ptu *= 1.2;
+                break;
+            case 3:
+                PlaySoundMem(sKill3, DX_PLAYTYPE_BACK);
+                ptu *= 1.5;
+                break;
+            case 4:
+                PlaySoundMem(sKill4, DX_PLAYTYPE_BACK);
+                ptu *= 2.0;
+                break;
+        }
+        E_num = -1;
+    }
 }

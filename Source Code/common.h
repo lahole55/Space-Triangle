@@ -11,17 +11,17 @@ Space Triangle
 #define WINDOW_WIDTH2 (WINDOW_WIDTH-250)
 #define PI 3.1415926535
 #define SELE_TITLE 2
-#define FH 3//ƒtƒHƒ“ƒg”
+#define FH 3 // ãƒ•ã‚©ãƒ³ãƒˆæ•°
 #define TOP 5
 #define SHOT_MAX 3
 #define SHOT_BULLET_MAX 1000
-#define TEN_MAX 3 //Œğ“_
+#define TEN_MAX 3 // äº¤ç‚¹
 #define ENEMY_MAX 4
 #define ENEMY_ORDER_MAX 84
 #define ENEMY_PATTERN_MAX 1
 #define STAGE_COUNT 180*60 // 180*60
 
-//—ñ‹“‘Ì
+// åˆ—æŒ™ä½“
 typedef enum {
 	GAME_TITLE,
 	GAME_RANKING,
@@ -31,7 +31,7 @@ typedef enum {
 	GAME_CLEAR_1,
 }GAME_STATE;
 
-/*\‘¢‘Ì*/
+/* æ§‹é€ ä½“ */
 typedef struct {
 	int left, right, up, down;
 	int shot, change, free;
@@ -42,8 +42,8 @@ typedef struct {
 	int ghandle;
 	int flag;
 	double ang;
-	int cnt; // ’e‚ğ‘Å‚Ä‚éŠÔŠu
-	int cnt2; // ’e‚ğ•ÏX‚Å‚«‚éŠÔŠu
+	int cnt; // å¼¾ã‚’æ’ƒã¦ã‚‹é–“éš”
+	int cnt2; // å¼¾ã‚’å¤‰æ›´ã§ãã‚‹é–“éš”
 	int pt;
 	int rank;
 	char name[11];
@@ -61,25 +61,25 @@ typedef struct {
 }Shot;
 
 typedef struct {
-	double slp, irc;//ŒX‚«AØ•Ğ
-}OneZi;//1ŸŠÖ”
+	double slp, irc; // å‚¾ãã€åˆ‡ç‰‡
+}OneZi;//1æ¬¡é–¢æ•°
 
 typedef struct {
 	double x, y;
 	int flag;
-	int h1, h2;//Œğ“_‚É‚ ‚é’e‚Ì”Ô†
+	int h1, h2; // äº¤ç‚¹ã«ã‚ã‚‹å¼¾ã®ç•ªå·
 }Ten;
 
 typedef struct {
 	double x, y;
-}Vector2D;//OŠpŒ`‚Æ“G‚Ì“–‚½‚è”»’è‚ğ‚·‚é‚Æ‚«‚Ég—p
+}Vector2D; // ä¸‰è§’å½¢ã¨å¼¾ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã™ã‚‹ã¨ãã«ä½¿ç”¨
 
 typedef struct {
 	double x, y;
 	int ghandle;
 	int flag;
-	int cnt;//“®‚«‚Åg—p
-	int flag2;//”½Ë‚Åg—p
+	int cnt; // å‹•ãã§ä½¿ç”¨
+	int flag2; // åå°„ã§ä½¿ç”¨
 	double ang;
 	int pattern, knd, spd, wait, rtn, pt;
 }EnemyData;
@@ -99,18 +99,18 @@ typedef struct {
 
 extern PlayerKey Pkey;
 extern PlayerData player;
-extern int ptu;//ƒ|ƒCƒ“ƒgƒAƒbƒv
+extern int ptu; // ãƒã‚¤ãƒ³ãƒˆã‚¢ãƒƒãƒ—
 extern Shot pla_bul;
 extern Shot pla_bul2[];
 extern OneZi hen[];
 extern Ten kouten[];
 extern EnemyData enemy[];
 extern EnemyOrder enemyOrder[];
-extern TopData top[];//ƒ‰ƒ“ƒLƒ“ƒOƒgƒbƒv‚T‚ğŠi”[
-extern int fHandle[];//ƒtƒHƒ“ƒg
+extern TopData top[]; //ãƒ©ãƒ³ã‚­ãƒ³ã‚°ãƒˆãƒƒãƒ—5ã‚’æ ¼ç´
+extern int fHandle[]; // ãƒ•ã‚©ãƒ³ãƒˆ
 extern int stageCount;
-extern int Tcnt;//OŠpŒ`‚ª•\¦‚³‚ê‚éŠÔ
-extern int game_num; // ƒQ[ƒ€‚ğ‚µ‚½‰ñ”
+extern int Tcnt; // ä¸‰è§’å½¢ãŒè¡¨ç¤ºã•ã‚Œã‚‹æ™‚é–“
+extern int game_num; // ã‚²ãƒ¼ãƒ ã‚’ã—ãŸå›æ•°
 extern int red;
 extern int water;
 extern int white;
@@ -121,8 +121,8 @@ void DrawGameTitle();
 void DrawGameRanking();
 void DrawGameLoadScrean();
 void DrawGameMain();
-void DrawGameClear0();//Œ‹‰Ê”­•\
-void DrawGameClear1();//ƒ‰ƒ“ƒLƒ“ƒO“ü‚è‚µ‚½‚Æ‚«‚Ì–¼‘O“ü—Í“™
+void DrawGameClear0(); // çµæœç™ºè¡¨
+void DrawGameClear1(); // ãƒ©ãƒ³ã‚­ãƒ³ã‚°å…¥ã‚Šã—ãŸã¨ãã®åå‰å…¥åŠ›ç­‰
 
 /* PlayerData.cpp */
 void PlayerLoad();
@@ -131,7 +131,7 @@ void PlayerDraw();
 void PlayerMove();
 void PlayerShotEnter();
 void PlayerBulletMove();
-void PlayerHitJudge();//Player‚ÆEnemy‚Ì“–‚½‚è”»’è(“–‚½‚Á‚½‚çAƒ|ƒCƒ“ƒg‚ğƒ}ƒCƒiƒX‚·‚é)
+void PlayerHitJudge(); // Playerã¨Enemyã®å½“ãŸã‚Šåˆ¤å®š(å½“ãŸã£ãŸã‚‰ã€ãƒã‚¤ãƒ³ãƒˆã‚’ãƒã‚¤ãƒŠã‚¹ã«ã™ã‚‹)
 
 /* Keisan.cpp */
 void KeisanInit();
@@ -153,7 +153,7 @@ void EnemyDraw();
 void EnemyDataLoad();
 void EnemyEnter();
 void EnemyMove();
-void EnemyKill();//0:ƒfƒ‚Move@1:’ÊíƒvƒŒƒC
+void EnemyKill();
 
 /* EnemyPattern.cpp */
 void EnemyPattern0(int n);

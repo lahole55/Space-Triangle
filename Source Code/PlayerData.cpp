@@ -11,429 +11,412 @@ static int HitJudge0(PlayerData a, EnemyData b);
 
 
 /*******************************
-void PlayerLoad()
-ŠT—vFƒvƒŒƒCƒ„[‚Æ’e‚Ì‰æ‘œEŒø‰Ê‰¹‚ğ“Ç‚İ‚Ş
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerLoad()
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨å¼¾ã®ç”»åƒãƒ»åŠ¹æœéŸ³ã‚’èª­ã¿è¾¼ã‚€
+ *******************************/
 void PlayerLoad() {
-	gPlayer = LoadGraph("sozai\\player.png");
-	gBullet[0] = LoadGraph("sozai\\pla_tama.png");
-	gBullet[1] = LoadGraph("sozai\\pla_tama2.png");
-	gBullet[2] = LoadGraph("sozai\\pla_tama3.png");
-
-	sShot = LoadSoundMem("bgm\\player\\shot.wav");
-	sSelect = LoadSoundMem("bgm\\select.wav");
-	sDamage = LoadSoundMem("bgm\\player\\Damage.wav");
+    gPlayer = LoadGraph("sozai\\player.png");
+    gBullet[0] = LoadGraph("sozai\\pla_tama.png");
+    gBullet[1] = LoadGraph("sozai\\pla_tama2.png");
+    gBullet[2] = LoadGraph("sozai\\pla_tama3.png");
+    
+    sShot = LoadSoundMem("bgm\\player\\shot.wav");
+    sSelect = LoadSoundMem("bgm\\select.wav");
+    sDamage = LoadSoundMem("bgm\\player\\Damage.wav");
 }
 
 /*******************************
-void PlayerInit()
-ŠT—vFƒvƒŒƒCƒ„[‚Ì‰Šú‰»
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerInit()
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–
+ *******************************/
 void PlayerInit() {
-	Pkey = PlayerKeyInit(KEY_INPUT_LEFT, KEY_INPUT_RIGHT, KEY_INPUT_UP, KEY_INPUT_DOWN, KEY_INPUT_Z, KEY_INPUT_X, KEY_INPUT_C);
-
-	player = PlayerDataInit((WINDOW_WIDTH2)/2, WINDOW_HEIGHT - 100, gPlayer, 0, 0);
-	player.cnt = 0;
-	player.cnt2 = 0;
-	player.pt = 0;
-	for (int n = 0; n < 11; n++)
-		player.name[n] = '\0';
-
-	/*Player‚ªŒ‚‚Á‚½’e‚ğ•`‰æ*/
-	for (int j = 0; j < SHOT_MAX; j++) {
-		pla_bul.bullet[j] = { 0 };
-		pla_bul.bullet[j].ghandle = gBullet[j];
-	}
-
-	/*1”­–Ú‚Ì‹O“¹‚É’e‚ğ’u‚­*/
-	for (int i = 0; i < SHOT_MAX; i++) {
-		pla_bul2[i] = { 0 };
-		for (int j = 0; j < SHOT_BULLET_MAX; j++) {
-			pla_bul2[i].bullet[j] = { 0 };
-			pla_bul2[i].bullet[j].ghandle = gBullet[i];
-		}
-	}
+    Pkey = PlayerKeyInit(KEY_INPUT_LEFT, KEY_INPUT_RIGHT, KEY_INPUT_UP, KEY_INPUT_DOWN, KEY_INPUT_Z, KEY_INPUT_X, KEY_INPUT_C);
+    
+    player = PlayerDataInit((WINDOW_WIDTH2)/2, WINDOW_HEIGHT - 100, gPlayer, 0, 0);
+    player.cnt = 0;
+    player.cnt2 = 0;
+    player.pt = 0;
+    for (int n = 0; n < 11; n++)
+        player.name[n] = '\0';
+    
+    /*PlayerãŒæ’ƒã£ãŸå¼¾ã‚’æç”»*/
+    for (int j = 0; j < SHOT_MAX; j++) {
+        pla_bul.bullet[j] = { 0 };
+        pla_bul.bullet[j].ghandle = gBullet[j];
+    }
+    
+    /*1ç™ºç›®ã®è»Œé“ã«å¼¾ã‚’ç½®ã*/
+    for (int i = 0; i < SHOT_MAX; i++) {
+        pla_bul2[i] = { 0 };
+        for (int j = 0; j < SHOT_BULLET_MAX; j++) {
+            pla_bul2[i].bullet[j] = { 0 };
+            pla_bul2[i].bullet[j].ghandle = gBullet[i];
+        }
+    }
 }
 
 
 /*******************************
-static PlayerKey PlayerKeyInit(int l, int r, int u, int d, int s, int c, int f)
-ŠT—vFƒL[ƒRƒ“ƒtƒBƒO‚Ì‰Šú‰»
-ˆø”‚PF¶‚Éù‰ñ‚·‚éƒL[
-ˆø”‚QF‰E‚Éù‰ñ‚·‚éƒL[
-ˆø”‚RF‘O‚Éi‚ŞƒL[
-ˆø”‚SFŒã‚ë‚Éi‚ŞƒL[
-ˆø”‚TF’e‚ğŒ‚‚ÂƒL[
-ˆø”‚UFŸ‚ÉŒ‚‚Â’e‚Ìí—Ş‚ğ•ÏX‚·‚éƒL[
-ˆø”‚VF’e‚ğÁ‚·ƒL[
-•Ô’lFƒL[ƒRƒ“ƒtƒBƒO
-*******************************/
+ static PlayerKey PlayerKeyInit(int l, int r, int u, int d, int s, int c, int f)
+ æ¦‚è¦ï¼šã‚­ãƒ¼ã‚³ãƒ³ãƒ•ã‚£ã‚°ã®åˆæœŸåŒ–
+ å¼•æ•°ï¼‘ï¼šå·¦ã«æ—‹å›ã™ã‚‹ã‚­ãƒ¼
+ å¼•æ•°ï¼’ï¼šå³ã«æ—‹å›ã™ã‚‹ã‚­ãƒ¼
+ å¼•æ•°ï¼“ï¼šå‰ã«é€²ã‚€ã‚­ãƒ¼
+ å¼•æ•°ï¼”ï¼šå¾Œã‚ã«é€²ã‚€ã‚­ãƒ¼
+ å¼•æ•°ï¼•ï¼šå¼¾ã‚’æ’ƒã¤ã‚­ãƒ¼
+ å¼•æ•°ï¼–ï¼šæ¬¡ã«æ’ƒã¤å¼¾ã®ç¨®é¡ã‚’å¤‰æ›´ã™ã‚‹ã‚­ãƒ¼
+ å¼•æ•°ï¼—ï¼šå¼¾ã‚’æ¶ˆã™ã‚­ãƒ¼
+ è¿”å€¤ï¼šã‚­ãƒ¼ã‚³ãƒ³ãƒ•ã‚£ã‚°
+ *******************************/
 static PlayerKey PlayerKeyInit(int l, int r, int u, int d, int s, int c, int f) {
-	PlayerKey tmp;
-
-	tmp.left = l;
-	tmp.right = r;
-	tmp.up = u;
-	tmp.down = d;
-	tmp.shot = s;
-	tmp.change = c;
-	tmp.free = f;
-
-	return tmp;
+    PlayerKey tmp;
+    
+    tmp.left = l;
+    tmp.right = r;
+    tmp.up = u;
+    tmp.down = d;
+    tmp.shot = s;
+    tmp.change = c;
+    tmp.free = f;
+    
+    return tmp;
 }
 
 /*******************************
-static PlayerData PlayerDataInit(double x, double y, int g, int f, double a)
-ŠT—vFƒvƒŒƒCƒ„[‚ÌÀ•WE‰æ‘œEƒtƒ‰ƒOEŠp“x‚Ì‰Šú‰»
-ˆø”‚PFxÀ•W
-ˆø”‚QFyÀ•W
-ˆø”‚RF“Ç‚İ‚ñ‚¾‰æ‘œ
-ˆø”‚SF¶¬‚µ‚Ä‚¢‚é‚©‚Ìƒtƒ‰ƒO
-ˆø”‚TFŠp“x
-•Ô’lF‰Šú‰»‚µ‚½ƒvƒŒƒCƒ„[
-*******************************/
+ static PlayerData PlayerDataInit(double x, double y, int g, int f, double a)
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™ãƒ»ç”»åƒãƒ»ãƒ•ãƒ©ã‚°ãƒ»è§’åº¦ã®åˆæœŸåŒ–
+ å¼•æ•°ï¼‘ï¼šxåº§æ¨™
+ å¼•æ•°ï¼’ï¼šyåº§æ¨™
+ å¼•æ•°ï¼“ï¼šèª­ã¿è¾¼ã‚“ã ç”»åƒ
+ å¼•æ•°ï¼”ï¼šç”Ÿæˆã—ã¦ã„ã‚‹ã‹ã®ãƒ•ãƒ©ã‚°
+ å¼•æ•°ï¼•ï¼šè§’åº¦
+ è¿”å€¤ï¼šåˆæœŸåŒ–ã—ãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+ *******************************/
 static PlayerData PlayerDataInit(double x, double y, int g, int f, double a) {
-	PlayerData tmp;
-	tmp.x = x;
-	tmp.y = y;
-	tmp.ghandle = g;
-	tmp.flag = f;
-	tmp.ang = a;
-
-	return tmp;
+    PlayerData tmp;
+    tmp.x = x;
+    tmp.y = y;
+    tmp.ghandle = g;
+    tmp.flag = f;
+    tmp.ang = a;
+    
+    return tmp;
 }
 
 /*******************************
-void PlayerDraw()
-ŠT—vFƒvƒŒƒCƒ„[‚Æ’e‚Ì•`‰æ
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerDraw()
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨å¼¾ã®æç”»
+ *******************************/
 void PlayerDraw() {
-	/*ƒvƒŒ[ƒ„[‚ªo‚·’eA*/
-	if (pla_bul.flag > 0) {
-		for (int j = 0; j < SHOT_MAX; j++) {
-			if (pla_bul.bullet[j].flag > 0) {
-				DrawRotaGraph(pla_bul.bullet[j].x, pla_bul.bullet[j].y, 1, pla_bul.bullet[j].ang, pla_bul.bullet[j].ghandle, TRUE, FALSE);
-			}
-		}
-	}
-
-	/*’eA‚©‚ço‚½’eB*/
-	for (int i = 0; i < SHOT_MAX; i++) {
-		if (pla_bul2[i].flag > 0) {
-			for (int j = 0; j < SHOT_BULLET_MAX; j++) {
-				if (pla_bul2[i].bullet[j].flag > 0)
-					DrawRotaGraph(pla_bul2[i].bullet[j].x, pla_bul2[i].bullet[j].y, 1, pla_bul2[i].bullet[j].ang, pla_bul2[i].bullet[j].ghandle, TRUE, FALSE);
-			}
-		}
-	}
-
-	/*ƒvƒŒ[ƒ„[*/
-	DrawRotaGraph(player.x, player.y, 1, player.ang, player.ghandle, TRUE, FALSE);
-
+    /*ãƒ—ãƒ¬ãƒ¼ãƒ¤ãƒ¼ãŒå‡ºã™å¼¾A*/
+    if (pla_bul.flag > 0) {
+        for (int j = 0; j < SHOT_MAX; j++) {
+            if (pla_bul.bullet[j].flag > 0) {
+                DrawRotaGraph(pla_bul.bullet[j].x, pla_bul.bullet[j].y, 1, pla_bul.bullet[j].ang, pla_bul.bullet[j].ghandle, TRUE, FALSE);
+            }
+        }
+    }
+    
+    /*å¼¾Aã‹ã‚‰å‡ºãŸå¼¾B*/
+    for (int i = 0; i < SHOT_MAX; i++) {
+        if (pla_bul2[i].flag > 0) {
+            for (int j = 0; j < SHOT_BULLET_MAX; j++) {
+                if (pla_bul2[i].bullet[j].flag > 0)
+                    DrawRotaGraph(pla_bul2[i].bullet[j].x, pla_bul2[i].bullet[j].y, 1, pla_bul2[i].bullet[j].ang, pla_bul2[i].bullet[j].ghandle, TRUE, FALSE);
+            }
+        }
+    }
+    
+    /*ãƒ—ãƒ¬ãƒ¼ãƒ¤ãƒ¼*/
+    DrawRotaGraph(player.x, player.y, 1, player.ang, player.ghandle, TRUE, FALSE);
+    
 }
 
 /*******************************
-void PlayerMove()
-ŠT—vFƒvƒŒƒCƒ„[‚Ì“®‚«
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerMove()
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‹•ã
+ *******************************/
 void PlayerMove() {
-
-	if (CheckHitKey(Pkey.up)) {
-		player.x += 5 * cos(player.ang - PI / 2);
-		player.y += 5 * sin(player.ang - PI / 2);
-	}
-	if (CheckHitKey(Pkey.down)) {
-		player.x += 5 * cos(player.ang + PI / 2);
-		player.y += 5 * sin(player.ang + PI / 2);
-	}
-	if (CheckHitKey(Pkey.left)) {
-		player.ang -= PI / 72;
-	}
-	if (CheckHitKey(Pkey.right)) {
-		player.ang += PI / 72;
-	}
-
-	if (player.x < 15)
-		player.x = 15;
-	if (player.x > WINDOW_WIDTH2 - 15)
-		player.x = WINDOW_WIDTH2 - 15;
-	if (player.y < 15)
-		player.y = 15;
-	if (player.y > WINDOW_HEIGHT - 15)
-		player.y = WINDOW_HEIGHT - 15;
+    
+    if (CheckHitKey(Pkey.up)) {
+        player.x += 5 * cos(player.ang - PI / 2);
+        player.y += 5 * sin(player.ang - PI / 2);
+    }
+    if (CheckHitKey(Pkey.down)) {
+        player.x += 5 * cos(player.ang + PI / 2);
+        player.y += 5 * sin(player.ang + PI / 2);
+    }
+    if (CheckHitKey(Pkey.left)) {
+        player.ang -= PI / 72;
+    }
+    if (CheckHitKey(Pkey.right)) {
+        player.ang += PI / 72;
+    }
+    
+    if (player.x < 15)
+        player.x = 15;
+    if (player.x > WINDOW_WIDTH2 - 15)
+        player.x = WINDOW_WIDTH2 - 15;
+    if (player.y < 15)
+        player.y = 15;
+    if (player.y > WINDOW_HEIGHT - 15)
+        player.y = WINDOW_HEIGHT - 15;
 }
 
 /*******************************
-void PlayerShotEnter()
-ŠT—vFƒvƒŒƒCƒ„[‚ªŒ‚‚Â’eE¶¬‚·‚é’e‚Ì‰Šú‰»
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerShotEnter()
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ’ƒã¤å¼¾ãƒ»ç”Ÿæˆã™ã‚‹å¼¾ã®åˆæœŸåŒ–
+ *******************************/
 void PlayerShotEnter() {
-	if (pla_bul.flag == 0) {
-		pla_bul.flag = 1;
-		pla_bul.cnt = 0;
-		return;
-	}
-
-	for (int i = 0; i < SHOT_MAX; i++) {
-		if (pla_bul2[i].flag == 0) {
-			pla_bul2[i].flag = 1;
-			pla_bul2[i].cnt = 0;
-			return;
-		}
-	}
+    if (pla_bul.flag == 0) {
+        pla_bul.flag = 1;
+        pla_bul.cnt = 0;
+        return;
+    }
+    
+    for (int i = 0; i < SHOT_MAX; i++) {
+        if (pla_bul2[i].flag == 0) {
+            pla_bul2[i].flag = 1;
+            pla_bul2[i].cnt = 0;
+            return;
+        }
+    }
 }
 
 /*******************************
-void PlayerBulletMove()
-ŠT—vF’e‚Ì“®‚«AOŠpŒ`‚ª‚Å‚«‚éğŒ‚Ìì¬
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerBulletMove()
+ æ¦‚è¦ï¼šå¼¾ã®å‹•ãã€ä¸‰è§’å½¢ãŒã§ãã‚‹æ¡ä»¶ã®ä½œæˆ
+ *******************************/
 void PlayerBulletMove() {
-	/*pla_bul‚Ìİ’è*/
-	if (player.flag == 0 && Tcnt == 0) {
-		if (player.cnt == 0) {
-			if (CheckHitKey(Pkey.shot)) {
-				if (pla_bul.flag > 0) {
-					if (pla_bul.bullet[pla_bul.num].flag == 0) {
-						PlaySoundMem(sShot, DX_PLAYTYPE_BACK);
-						pla_bul.bullet[pla_bul.num].flag = 1;
-						pla_bul.bullet[pla_bul.num].x = player.x;
-						pla_bul.bullet[pla_bul.num].y = player.y;
-						pla_bul.bullet[pla_bul.num].ang = player.ang;
-						pla_bul.bullet[pla_bul.num].spd = 6;
-						pla_bul.bullet[pla_bul.num].cnt = 2;
-
-						hen[pla_bul.num] = HenBullet(pla_bul, pla_bul.num);
-
-						for (int j = 0; j < SHOT_BULLET_MAX; j++) {//‚±‚ê‚Ü‚Å‚ ‚Á‚½ü‚ğÁ‚·
-							pla_bul2[pla_bul.num].bullet[j].flag = 0;
-						}
-
-						pla_bul.num = (pla_bul.num + 1) % SHOT_MAX;
-						player.cnt = 30;
-					}
-				}
-			}
-		}
-
-		if (player.cnt2 == 0) {
-			if (CheckHitKey(Pkey.change)) {
-				if (pla_bul.flag > 0) {
-					PlaySoundMem(sSelect, DX_PLAYTYPE_BACK);
-					pla_bul.num = (pla_bul.num + 1) % SHOT_MAX;
-					player.cnt2 = 20;
-				}
-			}
-		}
-	}
-
-	if (CheckHitKey(Pkey.free)) {
-		for (int i = 0; i < SHOT_MAX; i++) {
-			pla_bul.bullet[i].flag = 0; // i‚Ş’e‚ğÁ‚·
-			for (int j = 0; j < SHOT_BULLET_MAX; j++) {
-				pla_bul2[i].bullet[j].flag = 0;
-			}
-			kouten[i].flag = 0;
-			Tcnt = 0;
-		}
-	}
-	if (player.cnt > 0)
-		player.cnt--;
-	if (player.cnt2 > 0)
-		player.cnt2--;
-
-
-	for (int i = 0; i < SHOT_MAX; i++) {
-		if (pla_bul.bullet[i].flag == 1) {
-			pla_bul.bullet[i].x += pla_bul.bullet[i].spd * cos(pla_bul.bullet[i].ang - PI / 2);
-			pla_bul.bullet[i].y += pla_bul.bullet[i].spd * sin(pla_bul.bullet[i].ang - PI / 2);
-
-
-			/*“G‚Æ‚Ì“–‚½‚è”»’è(“–‚½‚Á‚½‚çA“G‚ğ‚Í‚¶‚­)*/
-
-
-			/*‰æ–ÊŠO‚Éo‚½‚çA*/
-			if (pla_bul.bullet[i].x < 0 || pla_bul.bullet[i].x > WINDOW_WIDTH2 || pla_bul.bullet[i].y < 0 || pla_bul.bullet[i].y > WINDOW_HEIGHT)
-				pla_bul.bullet[i].flag = 0;
-
-		}
-	}
-
-
-	/*pla_bul2‚Ìİ’è*/
-	for (int i = 0; i < SHOT_MAX; i++) {
-		if (pla_bul.bullet[i].cnt == 0 && pla_bul.bullet[i].flag > 0) {
-			for (int j = 0; j < SHOT_BULLET_MAX; j++) {
-				if (pla_bul2[i].bullet[j].flag == 0) {
-					pla_bul2[i].bullet[j].flag = 1;
-					pla_bul2[i].bullet[j].x = pla_bul.bullet[i].x;
-					pla_bul2[i].bullet[j].y = pla_bul.bullet[i].y;
-					pla_bul2[i].bullet[j].ang = pla_bul.bullet[i].ang;
-					pla_bul2[i].bullet[j].cnt = 90000;//900
-
-					pla_bul.bullet[i].cnt = 2;
-					break;
-				}
-			}
-		}
-
-		if (pla_bul.bullet[i].cnt > 0)
-			pla_bul.bullet[i].cnt--;
-	}
-
-	//Œğ“_‚ğ‹‚ß‚é
-	if (pla_bul2[0].bullet[0].flag > 0 && pla_bul2[1].bullet[0].flag > 0)
-		kouten[0] = Kouten_Init(hen[0], hen[1]);
-	if (pla_bul2[1].bullet[0].flag > 0 && pla_bul2[2].bullet[0].flag > 0)
-		kouten[1] = Kouten_Init(hen[1], hen[2]);
-	if (pla_bul2[2].bullet[0].flag > 0 && pla_bul2[0].bullet[0].flag > 0)
-		kouten[2] = Kouten_Init(hen[2], hen[0]);
-
-	/*’e‚ªd‚È‚Á‚Ä‚¢‚é‚©‚Ì”»’è*/
-	//hen[0]‚Æhen[1]
-	if (kouten[0].flag == 1) {
-		for (int j0 = 0; j0 < SHOT_BULLET_MAX; j0++) {
-			if (pla_bul2[0].bullet[j0].flag > 0) {
-				for (int j1 = 0; j1 < SHOT_BULLET_MAX; j1++) {
-					if (pla_bul2[1].bullet[j1].flag > 0) {
-						if (BulBulHitJudge(pla_bul2[0].bullet[j0], pla_bul2[1].bullet[j1], kouten[0]) > 0) {
-							kouten[0].flag = 2;
-							kouten[0].h1 = j0;
-							kouten[0].h2 = j1;
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	else if(kouten[0].flag == 2){
-		if (pla_bul2[0].bullet[kouten[0].h1].flag == 0 || pla_bul2[1].bullet[kouten[0].h2].flag == 0)
-			kouten[0].flag = 0;
-	}
-
-	//hen[1]‚Æhen[2]
-	if (kouten[1].flag == 1) {
-		for (int j1 = 0; j1 < SHOT_BULLET_MAX; j1++) {
-			if (pla_bul2[1].bullet[j1].flag > 0) {
-				for (int j2 = 0; j2 < SHOT_BULLET_MAX; j2++) {
-					if (pla_bul2[2].bullet[j2].flag > 0) {
-						if (BulBulHitJudge(pla_bul2[1].bullet[j1], pla_bul2[2].bullet[j2], kouten[1]) > 0) {
-							kouten[1].flag = 2;
-							kouten[1].h1 = j1;
-							kouten[1].h2 = j2;
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	else if(kouten[1].flag == 2){
-		if (pla_bul2[1].bullet[kouten[1].h1].flag == 0 || pla_bul2[2].bullet[kouten[1].h2].flag == 0)
-			kouten[1].flag = 0;
-	}
-
-	//hen[2]‚Æhen[0]
-	if (kouten[2].flag == 1) {//Œğ“_‚ª‘¶İ‚µ‚È‚¢ê‡
-		for (int j2 = 0; j2 < SHOT_BULLET_MAX; j2++) {
-			if (pla_bul2[2].bullet[j2].flag > 0) {
-				for (int j0 = 0; j0 < SHOT_BULLET_MAX; j0++) {
-					if (pla_bul2[0].bullet[j0].flag > 0) {
-						if (BulBulHitJudge(pla_bul2[2].bullet[j2], pla_bul2[0].bullet[j0], kouten[2]) > 0) {
-							kouten[2].flag = 2;
-							kouten[2].h1 = j2;
-							kouten[2].h2 = j0;
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	else if(kouten[2].flag == 2){
-		if (pla_bul2[2].bullet[kouten[2].h1].flag == 0 || pla_bul2[0].bullet[kouten[2].h2].flag == 0)
-			kouten[2].flag = 0;
-	}
-
-	//ã“ñ‚Â‚ª¬‚è—§‚Â‚©‚Ì”»’è
-	if (kouten[0].flag == 2 && kouten[1].flag == 2 && kouten[2].flag == 2) {
-		if (Tcnt == 0)
-			Tcnt = 120;
-		DrawTriangle(kouten[0].x, kouten[0].y, kouten[1].x, kouten[1].y, kouten[2].x, kouten[2].y, white, TRUE);
-	}
-
-	/*Á‚¦‚é‚Ü‚Å‚ÌƒJƒEƒ“ƒg‚ÌŒvZ*/
-	//OŠpŒ`‚ª‚Å‚«‚½‚Æ‚«
-	if (Tcnt == 1) {//’e‚ğ‚·‚×‚ÄÁ‚·
-		for (int i = 0; i < SHOT_MAX; i++) {
-			pla_bul.bullet[i].flag = 0;
-			for (int j = 0; j < SHOT_BULLET_MAX; j++) {
-				pla_bul2[i].bullet[j].flag = 0;
-			}
-		}
-	}
-	if (Tcnt > 0)
-		Tcnt--;
-	//©‘R‚ÉÁ‚¦‚Ä‚¢‚­‚Æ‚«
-	for (int i = 0; i < SHOT_MAX; i++) {
-		for (int j = 0; j < SHOT_BULLET_MAX; j++) {
-			if (pla_bul2[i].bullet[j].flag > 0) {
-				if (pla_bul2[i].bullet[j].cnt == 0)
-					pla_bul2[i].bullet[j].flag = 0;
-
-				if (pla_bul2[i].bullet[j].cnt > 0)
-					pla_bul2[i].bullet[j].cnt--;
-			}
-		}
-	}
-
+    /*pla_bulã®è¨­å®š*/
+    if (player.flag == 0 && Tcnt == 0) {
+        if (player.cnt == 0) {
+            if (CheckHitKey(Pkey.shot)) {
+                if (pla_bul.flag > 0) {
+                    if (pla_bul.bullet[pla_bul.num].flag == 0) {
+                        PlaySoundMem(sShot, DX_PLAYTYPE_BACK);
+                        pla_bul.bullet[pla_bul.num].flag = 1;
+                        pla_bul.bullet[pla_bul.num].x = player.x;
+                        pla_bul.bullet[pla_bul.num].y = player.y;
+                        pla_bul.bullet[pla_bul.num].ang = player.ang;
+                        pla_bul.bullet[pla_bul.num].spd = 6;
+                        pla_bul.bullet[pla_bul.num].cnt = 2;
+                        
+                        hen[pla_bul.num] = HenBullet(pla_bul, pla_bul.num);
+                        
+                        for (int j = 0; j < SHOT_BULLET_MAX; j++) {//ã“ã‚Œã¾ã§ã‚ã£ãŸç·šã‚’æ¶ˆã™
+                            pla_bul2[pla_bul.num].bullet[j].flag = 0;
+                        }
+                        
+                        pla_bul.num = (pla_bul.num + 1) % SHOT_MAX;
+                        player.cnt = 30;
+                    }
+                }
+            }
+        }
+        
+        if (player.cnt2 == 0) {
+            if (CheckHitKey(Pkey.change)) {
+                if (pla_bul.flag > 0) {
+                    PlaySoundMem(sSelect, DX_PLAYTYPE_BACK);
+                    pla_bul.num = (pla_bul.num + 1) % SHOT_MAX;
+                    player.cnt2 = 20;
+                }
+            }
+        }
+    }
+    
+    if (CheckHitKey(Pkey.free)) {
+        for (int i = 0; i < SHOT_MAX; i++) {
+            pla_bul.bullet[i].flag = 0; // é€²ã‚€å¼¾ã‚’æ¶ˆã™
+            for (int j = 0; j < SHOT_BULLET_MAX; j++) {
+                pla_bul2[i].bullet[j].flag = 0;
+            }
+            kouten[i].flag = 0;
+            Tcnt = 0;
+        }
+    }
+    if (player.cnt > 0)
+        player.cnt--;
+    if (player.cnt2 > 0)
+        player.cnt2--;
+    
+    
+    for (int i = 0; i < SHOT_MAX; i++) {
+        if (pla_bul.bullet[i].flag == 1) {
+            pla_bul.bullet[i].x += pla_bul.bullet[i].spd * cos(pla_bul.bullet[i].ang - PI / 2);
+            pla_bul.bullet[i].y += pla_bul.bullet[i].spd * sin(pla_bul.bullet[i].ang - PI / 2);
+            
+            
+            /*ç”»é¢å¤–ã«å‡ºãŸã‚‰ã€*/
+            if (pla_bul.bullet[i].x < 0 || pla_bul.bullet[i].x > WINDOW_WIDTH2 || pla_bul.bullet[i].y < 0 || pla_bul.bullet[i].y > WINDOW_HEIGHT)
+                pla_bul.bullet[i].flag = 0;
+            
+        }
+    }
+    
+    
+    /*pla_bul2ã®è¨­å®š*/
+    for (int i = 0; i < SHOT_MAX; i++) {
+        if (pla_bul.bullet[i].cnt == 0 && pla_bul.bullet[i].flag > 0) {
+            for (int j = 0; j < SHOT_BULLET_MAX; j++) {
+                if (pla_bul2[i].bullet[j].flag == 0) {
+                    pla_bul2[i].bullet[j].flag = 1;
+                    pla_bul2[i].bullet[j].x = pla_bul.bullet[i].x;
+                    pla_bul2[i].bullet[j].y = pla_bul.bullet[i].y;
+                    pla_bul2[i].bullet[j].ang = pla_bul.bullet[i].ang;
+                    pla_bul2[i].bullet[j].cnt = 90000;//900
+                    
+                    pla_bul.bullet[i].cnt = 2;
+                    break;
+                }
+            }
+        }
+        
+        if (pla_bul.bullet[i].cnt > 0)
+            pla_bul.bullet[i].cnt--;
+    }
+    
+    //äº¤ç‚¹ã‚’æ±‚ã‚ã‚‹
+    if (pla_bul2[0].bullet[0].flag > 0 && pla_bul2[1].bullet[0].flag > 0)
+        kouten[0] = Kouten_Init(hen[0], hen[1]);
+    if (pla_bul2[1].bullet[0].flag > 0 && pla_bul2[2].bullet[0].flag > 0)
+        kouten[1] = Kouten_Init(hen[1], hen[2]);
+    if (pla_bul2[2].bullet[0].flag > 0 && pla_bul2[0].bullet[0].flag > 0)
+        kouten[2] = Kouten_Init(hen[2], hen[0]);
+    
+    /*å¼¾ãŒé‡ãªã£ã¦ã„ã‚‹ã‹ã®åˆ¤å®š*/
+    //hen[0]ã¨hen[1]
+    if (kouten[0].flag == 1) {
+        for (int j0 = 0; j0 < SHOT_BULLET_MAX; j0++) {
+            if (pla_bul2[0].bullet[j0].flag > 0) {
+                for (int j1 = 0; j1 < SHOT_BULLET_MAX; j1++) {
+                    if (pla_bul2[1].bullet[j1].flag > 0) {
+                        if (BulBulHitJudge(pla_bul2[0].bullet[j0], pla_bul2[1].bullet[j1], kouten[0]) > 0) {
+                            kouten[0].flag = 2;
+                            kouten[0].h1 = j0;
+                            kouten[0].h2 = j1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if(kouten[0].flag == 2){
+        if (pla_bul2[0].bullet[kouten[0].h1].flag == 0 || pla_bul2[1].bullet[kouten[0].h2].flag == 0)
+            kouten[0].flag = 0;
+    }
+    
+    //hen[1]ã¨hen[2]
+    if (kouten[1].flag == 1) {
+        for (int j1 = 0; j1 < SHOT_BULLET_MAX; j1++) {
+            if (pla_bul2[1].bullet[j1].flag > 0) {
+                for (int j2 = 0; j2 < SHOT_BULLET_MAX; j2++) {
+                    if (pla_bul2[2].bullet[j2].flag > 0) {
+                        if (BulBulHitJudge(pla_bul2[1].bullet[j1], pla_bul2[2].bullet[j2], kouten[1]) > 0) {
+                            kouten[1].flag = 2;
+                            kouten[1].h1 = j1;
+                            kouten[1].h2 = j2;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if(kouten[1].flag == 2){
+        if (pla_bul2[1].bullet[kouten[1].h1].flag == 0 || pla_bul2[2].bullet[kouten[1].h2].flag == 0)
+            kouten[1].flag = 0;
+    }
+    
+    //hen[2]ã¨hen[0]
+    if (kouten[2].flag == 1) {//äº¤ç‚¹ãŒå­˜åœ¨ã—ãªã„å ´åˆ
+        for (int j2 = 0; j2 < SHOT_BULLET_MAX; j2++) {
+            if (pla_bul2[2].bullet[j2].flag > 0) {
+                for (int j0 = 0; j0 < SHOT_BULLET_MAX; j0++) {
+                    if (pla_bul2[0].bullet[j0].flag > 0) {
+                        if (BulBulHitJudge(pla_bul2[2].bullet[j2], pla_bul2[0].bullet[j0], kouten[2]) > 0) {
+                            kouten[2].flag = 2;
+                            kouten[2].h1 = j2;
+                            kouten[2].h2 = j0;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if(kouten[2].flag == 2){
+        if (pla_bul2[2].bullet[kouten[2].h1].flag == 0 || pla_bul2[0].bullet[kouten[2].h2].flag == 0)
+            kouten[2].flag = 0;
+    }
+    
+    //ä¸ŠäºŒã¤ãŒæˆã‚Šç«‹ã¤ã‹ã®åˆ¤å®š
+    if (kouten[0].flag == 2 && kouten[1].flag == 2 && kouten[2].flag == 2) {
+        if (Tcnt == 0)
+            Tcnt = 120;
+        DrawTriangle(kouten[0].x, kouten[0].y, kouten[1].x, kouten[1].y, kouten[2].x, kouten[2].y, white, TRUE);
+    }
+    
+    /*æ¶ˆãˆã‚‹ã¾ã§ã®ã‚«ã‚¦ãƒ³ãƒˆã®è¨ˆç®—*/
+    //ä¸‰è§’å½¢ãŒã§ããŸã¨ã
+    if (Tcnt == 1) {//å¼¾ã‚’ã™ã¹ã¦æ¶ˆã™
+        for (int i = 0; i < SHOT_MAX; i++) {
+            pla_bul.bullet[i].flag = 0;
+            for (int j = 0; j < SHOT_BULLET_MAX; j++) {
+                pla_bul2[i].bullet[j].flag = 0;
+            }
+        }
+    }
+    if (Tcnt > 0)
+        Tcnt--;
+    //è‡ªç„¶ã«æ¶ˆãˆã¦ã„ãã¨ã
+    for (int i = 0; i < SHOT_MAX; i++) {
+        for (int j = 0; j < SHOT_BULLET_MAX; j++) {
+            if (pla_bul2[i].bullet[j].flag > 0) {
+                if (pla_bul2[i].bullet[j].cnt == 0)
+                    pla_bul2[i].bullet[j].flag = 0;
+                
+                if (pla_bul2[i].bullet[j].cnt > 0)
+                    pla_bul2[i].bullet[j].cnt--;
+            }
+        }
+    }
+    
 }
 
 /*******************************
-void PlayerHitJudge()
-ŠT—vFƒvƒŒƒCƒ„[‚Æ“G‚ª“–‚½‚Á‚½‚Æ‚«‚Éƒ|ƒCƒ“ƒg‚ğŒ¸‚ç‚·
-ˆø”F‚È‚µ
-•Ô’lF‚È‚µ
-*******************************/
+ void PlayerHitJudge()
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µãŒå½“ãŸã£ãŸã¨ãã«ãƒã‚¤ãƒ³ãƒˆã‚’æ¸›ã‚‰ã™
+ *******************************/
 void PlayerHitJudge() {
-	if (player.flag == 0) {
-		for (int i = 0; i < ENEMY_MAX; i++) {
-			if (HitJudge0(player, enemy[i]) == 1) {
-				PlaySoundMem(sDamage, DX_PLAYTYPE_BACK);
-				ptu -= 3;
-			}
-		}
-	}
+    if (player.flag == 0) {
+        for (int i = 0; i < ENEMY_MAX; i++) {
+            if (HitJudge0(player, enemy[i]) == 1) {
+                PlaySoundMem(sDamage, DX_PLAYTYPE_BACK);
+                ptu -= 3;
+            }
+        }
+    }
 }
 
 /*******************************
-static int HitJudge0(PlayerData a, EnemyData b)
-ŠT—vFƒvƒŒƒCƒ„[‚Æ“G‚Ì‚ ‚½‚è”»’è
-ˆø”‚PFƒvƒŒƒCƒ„[
-ˆø”‚QF“G
-•Ô’lF1.“–‚½‚Á‚½@0.“–‚½‚Á‚Ä‚¢‚È‚¢
-*******************************/
+ static int HitJudge0(PlayerData a, EnemyData b)
+ æ¦‚è¦ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ•µã®ã‚ãŸã‚Šåˆ¤å®š
+ å¼•æ•°ï¼‘ï¼šãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+ å¼•æ•°ï¼’ï¼šæ•µ
+ è¿”å€¤ï¼š1.å½“ãŸã£ãŸã€€0.å½“ãŸã£ã¦ã„ãªã„
+ *******************************/
 static int HitJudge0(PlayerData a, EnemyData b) {
-	int x = a.x - b.x;
-	int y = a.y - b.y;
-	int h = 20;
-
-	if (x*x + y*y < h*h) {
-		return 1;
-	}
-	else {
-		return 0;
-	}
+    int x = a.x - b.x;
+    int y = a.y - b.y;
+    int h = 20;
+    
+    if (x*x + y*y < h*h) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
