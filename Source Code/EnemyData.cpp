@@ -1,8 +1,3 @@
-/*******************************
-EnemyData.cpp
-概要：敵データの描画、動き、キル判定
-*******************************/
-
 #include "common.h"
 
 static int gEnemy1, gEnemy2, gEnemy3;
